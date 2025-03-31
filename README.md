@@ -26,3 +26,8 @@ Above all, FocusFlow aims to streamline daily workflows. By avoiding bloated fun
 ## Lizenz
 
 Copyright 2025, licensed under Apache License, Version 2.0.
+
+## Install Env
+```
+conda env create -f environment.yml
+```
