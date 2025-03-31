@@ -1,0 +1,34 @@
+name: Django CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.11'
+    - name: Install conda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        auto-update-conda: true
+        python-version: 3.11
+    - name: Create conda environment
+      run: conda env create -f environment.yml
+    - name: Activate conda environment
+      run: conda activate focusflow
+    - name: Install Dependencies
+      run: |
+        pip install pytest
+    - name: Run Tests
+      run: |
+        python manage.py migrate
+        pytest
