@@ -1,0 +1,14 @@
+name: focusflow
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - mysqlclient
+  - django>=4.2
+  - djangorestframework
+  - python-dotenv
+  - pip:
+      - pytest
+      - pytest-django
