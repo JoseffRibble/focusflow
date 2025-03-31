@@ -19,12 +19,12 @@ jobs:
     - name: Install conda
       uses: conda-incubator/setup-miniconda@v3
       with:
-        auto-update-conda: true
-        python-version: 3.11
-    - name: Create conda environment
-      run: conda env create -f environment.yml
-    - name: Activate conda environment
-      run: conda activate focusflow
+          python-version: 3.11
+          mamba-version: "*"
+          channels: conda-forge,defaults
+          channel-priority: true
+          activate-environment: anaconda-client-env
+          environment-file: environment.yml
     - name: Install Dependencies
       run: |
         pip install pytest
