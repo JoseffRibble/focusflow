@@ -1,8 +1,9 @@
-
 import pytest
 from django.utils import timezone
+
 from core.models import Task, TaskPriority, User
 from core.models.enums import TaskStatus
+
 
 @pytest.mark.django_db
 class TestTaskStatus:

@@ -1,7 +1,8 @@
-
 import pytest
 from django.utils import timezone
+
 from core.models import Task, TaskPriority, User
+
 
 @pytest.mark.django_db
 class TestTaskPermissions:

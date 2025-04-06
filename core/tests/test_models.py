@@ -1,9 +1,11 @@
-
 from datetime import timedelta
+
 import pytest
 from django.utils import timezone
+
 from core.models import Task, Team, User
 from core.models.enums import TaskPriority
+
 
 @pytest.mark.django_db
 class TestModelCreation:
@@ -39,7 +41,9 @@ class TestModelCreation:
             due_date=timezone.now().date(),
             priority=TaskPriority.MEDIUM,
         )
-        user = User.objects.create_user(username="assignee", email="a@a.com", password="123")
+        user = User.objects.create_user(
+            username="assignee", email="a@a.com", password="123"
+        )
         task.assign_to_user(user)
         assert task.assignee_user == user
         assert task.assignee_team is None

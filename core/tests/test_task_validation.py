@@ -1,8 +1,9 @@
-
 import pytest
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from core.models import Task, TaskPriority, User
+
+from core.models import Task, User
+
 
 @pytest.mark.django_db
 class TestTaskValidation:

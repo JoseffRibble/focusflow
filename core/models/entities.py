@@ -1,7 +1,14 @@
+from __future__ import annotations  # Allows forward references like "User"
+
+from typing import TYPE_CHECKING, Any
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from .enums import TaskPriority, TaskStatus
+
+if TYPE_CHECKING:
+    from django.db.models.query import QuerySet
 
 
 class User(AbstractUser):
@@ -18,12 +25,12 @@ class User(AbstractUser):
 
     groups = models.ManyToManyField(
         "auth.Group",
-        related_name="focusflow_users",  # To avoid conflicts with Django's default groups
+        related_name="focusflow_users",
         blank=True,
     )
     user_permissions = models.ManyToManyField(
         "auth.Permission",
-        related_name="focusflow_user_permissions",  # To avoid conflicts with Django's default permissions
+        related_name="focusflow_user_permissions",
         blank=True,
     )
 
@@ -48,20 +55,20 @@ class Team(models.Model):
     # Relationships
     members = models.ManyToManyField(User, related_name="teams")
 
-    def add_member(self, user):
+    def add_member(self, user: User) -> None:
         self.members.add(user)
 
-    def remove_member(self, user):
+    def remove_member(self, user: User) -> None:
         self.members.remove(user)
 
     class Meta:
         verbose_name = "Team"
         verbose_name_plural = "Teams"
-        ordering = ["name"]  # Order by name ascending
+        ordering = ["name"]
 
 
-class TaskManager(models.Manager):
-    def filter_tasks(self, **kwargs):
+class TaskManager(models.Manager["Task"]):
+    def filter_tasks(self, **kwargs: Any) -> QuerySet[Task]:
         return self.filter(**kwargs)
 
 
@@ -89,22 +96,22 @@ class Task(models.Model):
 
     objects = TaskManager()
 
-    def assign_to_user(self, user):
+    def assign_to_user(self, user: User) -> None:
         self.assignee_user = user
         self.assignee_team = None
         self.save()
 
-    def assign_to_team(self, team):
+    def assign_to_team(self, team: Team) -> None:
         self.assignee_team = team
         self.assignee_user = None
         self.save()
 
-    def update_status(self, new_status):
+    def update_status(self, new_status: str) -> None:
         if new_status in TaskStatus.values:
             self.status = new_status
             self.save()
 
-    def can_user_edit(self, user):
+    def can_user_edit(self, user: User) -> bool:
         return self.assignee_user == user
 
     class Meta:
