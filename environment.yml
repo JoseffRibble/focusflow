@@ -12,3 +12,7 @@ dependencies:
   - pip:
       - pytest
       - pytest-django
+      - black
+      - mypy
+      - ruff
+      - pre-commit
