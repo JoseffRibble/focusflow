@@ -1,0 +1,43 @@
+.PHONY: setup format lint check pre-commit clean clean-cache clean-env
+
+# Create conda environment and install pre-commit hooks
+setup:
+	powershell -Command "& { \
+		conda env create -f environment.yml; \
+		conda activate focusflow; \
+		pre-commit install \
+	}"
+
+# Format code using Black and Ruff (includes import sorting)
+format:
+	black core
+	-ruff check core --fix || echo [INFO] Ruff finished with issues. Please fix manually.
+
+# Lint using Ruff and Mypy (no auto-fixes)
+lint:
+	ruff check core
+	mypy core
+
+# Strict check: fail on any issue (for CI or pre-push)
+check:
+	ruff check core
+	black --check core
+	mypy core
+
+# Run pre-commit hooks on all files
+pre-commit:
+	pre-commit run --all-files
+
+# Combined cleanup
+clean: clean-cache clean-env
+
+# Remove Python cache files
+clean-cache:
+	del /s /q *.pyc
+	for /d /r . %%d in (__pycache__) do @if exist "%%d" rd /s /q "%%d"
+	if exist .pytest_cache rd /s /q .pytest_cache
+
+# Remove conda environment completely
+clean-env:
+	-@conda deactivate || echo "Skip deactivate"
+	conda activate base && conda remove --name focusflow --all -y

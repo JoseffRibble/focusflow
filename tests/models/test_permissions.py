@@ -1,16 +1,17 @@
-
 import pytest
 from django.utils import timezone
+
 from core.models import Task, TaskPriority, User
+
 
 @pytest.mark.django_db
 class TestTaskPermissions:
     def test_only_assignee_can_edit(self):
         user1 = User.objects.create_user(
-            username="user1", email="assignee@example.com", password="pass"
+            username="user1", email="assignee@example.com", password="pass123"
         )
         user2 = User.objects.create_user(
-            username="user2", email="other@example.com", password="pass"
+            username="user2", email="other@example.com", password="pass123"
         )
         task = Task.objects.create(
             title="Secure",

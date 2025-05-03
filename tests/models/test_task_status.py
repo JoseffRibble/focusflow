@@ -1,14 +1,15 @@
-
 import pytest
 from django.utils import timezone
+
 from core.models import Task, TaskPriority, User
 from core.models.enums import TaskStatus
+
 
 @pytest.mark.django_db
 class TestTaskStatus:
     def setup_method(self):
         self.user = User.objects.create_user(
-            username="flowuser", email="f@f.com", password="pass"
+            username="flowuser", email="f@f.com", password="pass123"
         )
         self.task = Task.objects.create(
             title="Status Flow",
