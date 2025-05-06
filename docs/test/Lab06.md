@@ -3,7 +3,7 @@
 - This document summarizes the design and implementation for Exercises 6.1 to 6.4, covering model-level testing, service abstraction, repository encapsulation, and REST API development.
 - All documentation was reviewed using ChatGPT to ensure grammatical accuracy.
 
-## 6.1 –  Unit Testing of Models
+## 6.1 – Unit Testing of Models
 
 ### Test Design Techniques Applied
 
