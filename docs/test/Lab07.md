@@ -11,7 +11,7 @@ To run the BDD tests, execute the following command from the root directory of t
 ```
 behave
 ```
-This will automatically detect and execute all scenarios defined in the feature files located in the features/ directory.
+This will automatically detect and execute all scenarios defined in the feature files located in the [features](../../features/) directory.
 
 ## 7.3 – BDD Test Automation
 BDD tests are best executed during the **integration test stage**. This is because they validate the system's behavior from the user's perspective, involving multiple components working together. Executing them at this stage ensures that higher-level business requirements are being met across integrated parts of the system.
