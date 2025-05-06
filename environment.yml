@@ -15,4 +15,5 @@ dependencies:
       - black
       - mypy
       - ruff
+      - behave
       - pre-commit
