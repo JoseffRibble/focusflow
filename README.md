@@ -36,6 +36,7 @@ conda activate focusflow
 ## Run tests
 ```bash
 pytest
+behave
 ```
 
 ## Run server
