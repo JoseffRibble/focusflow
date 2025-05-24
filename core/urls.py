@@ -4,9 +4,11 @@ from rest_framework.routers import DefaultRouter
 from core.views.role_view import RoleUpdateView
 from core.views.team_view import TeamViewSet
 from core.views.user_view import RegisterView
+from core.views.views import TaskViewSet
 
 router = DefaultRouter()
 router.register(r"teams", TeamViewSet, basename="teams")
+router.register(r"tasks", TaskViewSet, basename="tasks")
 
 urlpatterns = [
     path("api/register", RegisterView.as_view(), name="register"),
