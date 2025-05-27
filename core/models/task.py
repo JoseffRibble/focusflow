@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Optional
 
 from django.db import models
 from django.db.models.query import QuerySet
@@ -13,6 +13,28 @@ from core.models.user import User
 class TaskManager(models.Manager["Task"]):
     def filter_tasks(self, **kwargs: Any) -> QuerySet[Task]:
         return self.filter(**kwargs)
+
+    def create_task(
+        self,
+        title: str,
+        short_description: Optional[str] = None,
+        long_description: Optional[str] = None,
+        due_date: Optional[Any] = None,
+        priority: Optional[str] = None,
+        status: Optional[str] = None,
+        **extra_fields: Any,
+    ) -> Task:
+        task = self.model(
+            title=title,
+            short_description=short_description,
+            long_description=long_description,
+            due_date=due_date,
+            priority=priority,
+            status=status,
+            **extra_fields,
+        )
+        task.save()
+        return task
 
 
 class Task(models.Model):
@@ -33,11 +55,7 @@ class Task(models.Model):
         related_name="assigned_tasks",
     )
     assignee_team: models.ForeignKey = models.ForeignKey(
-        Team,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="tasks",
+        Team, null=True, blank=True, on_delete=models.SET_NULL, related_name="tasks"
     )
 
     tags: Any = models.JSONField(blank=True, null=True)

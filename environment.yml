@@ -17,3 +17,6 @@ dependencies:
       - ruff
       - behave
       - pre-commit
+      - djangorestframework
+      - markdown
+      - django-filter
