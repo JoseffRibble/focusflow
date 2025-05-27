@@ -3,7 +3,10 @@
 # Create conda environment and install pre-commit hooks
 setup:
 	conda env create -f environment.yml
-	. $$(conda info --base)/etc/profile.d/conda.sh && conda activate focusflow && pre-commit install
+	. $$(conda info --base)/etc/profile.d/conda.sh 
+	conda init
+	conda activate focusflow
+	pre-commit install
 
 # Format code using Black and Ruff (includes import sorting)
 format:

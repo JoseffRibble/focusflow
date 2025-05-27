@@ -7,8 +7,11 @@ class TaskAPITests(APITestCase):
     def setUpTestData(cls):
         cls.task_data = {
             'title': 'Test Task',
-            'description': 'Test Description',
-            'status': 'pending'
+            'short_description': 'Test',
+            'long_description': 'Test Long Description',
+            'due_date': '1970-01-01',
+            'priority': 'LOW',
+            'status': 'PENDING'
         }
         cls.task = Task.objects.create(**cls.task_data)
 
