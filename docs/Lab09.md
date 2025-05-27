@@ -39,14 +39,14 @@ API endpoint was created using the Django REST API. The serializer is defined at
 #### Constant Load:
 `locust -u 100 -r 100 --run-time 1m -f tests/load/locustfile.py --host=http://127.0.0.1:8000/`
 
-![Constant Load](docs/ConstantLoad.png)
+![Constant Load](ConstantLoad.png)
 
 There is an inital spike when starting the test as many new users are created.
 
 #### Ramp Up Load:
 `locust -u 100 -r 2 --run-time 1m -f tests/load/locustfile.py --host=http://127.0.0.1:8000/`
 
-![Ramp Up Load](docs/RampLoad.png)
+![Ramp Up Load](RampLoad.png)
 
 The response times are more steady when there isn't a massive increase in users.
 
