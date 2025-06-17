@@ -23,7 +23,7 @@ jobs:
           activate-environment: focusflow
 
       - name: Run Django Tests
-        working-directory: backend
+        working-directory: backend/focusflow
         shell: bash -el {0}
         run: |
           python manage.py migrate
