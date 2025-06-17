@@ -11,6 +11,7 @@
 
 - Run server:  
   ```bash
+  cd backend
   python manage.py runserver
   ```
 
