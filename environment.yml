@@ -20,3 +20,4 @@ dependencies:
       - djangorestframework
       - markdown
       - django-filter
+      - locust

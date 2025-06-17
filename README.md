@@ -33,13 +33,33 @@ conda env create -f environment.yml
 conda activate focusflow
 ```
 
-## Run tests
+## How to Run
+### Run backend
 ```bash
+cd backend
+python manage.py runserver
+```
+### Run frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+### Web
+- Open `http://localhost:5173`
+
+## Run tests
+### Backend
+```bash
+cd backend
 pytest
+```
+### Features
+```bash
+cd backend
 behave
 ```
 
-## Run server
-```bash
-python manage.py runserver
-```
+### Frontend
+
+- Details: [UI Testing with Cypress](frontend\cypress\README.md)

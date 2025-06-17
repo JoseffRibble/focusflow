@@ -1,0 +1,14 @@
+# dependencies
+node_modules/
+# build
+dist/
+build/
+.next/
+out/
+# Cypress
+cypress/screenshots/
+cypress/videos/
+# misc
+coverage/
+.cache/
+.turbo/

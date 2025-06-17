@@ -1,40 +1,57 @@
-name: Django CI
+name: Full CI (Backend + Frontend)
 
 on:
   [push, pull_request]
-
-permissions:
-  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Cache conda
-      uses: actions/cache@v3
-      env:
-        CACHE_NUMBER: 0
-      with:
-        path: ~/conda_pkgs_dir
-        key:
-          ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
-          hashFiles('environment.yml') }}
-    - name: Install conda
-      uses: conda-incubator/setup-miniconda@v3
-      with:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ---------------------------
+      # Setup Backend
+      # ---------------------------
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
           python-version: 3.11
-          mamba-version: "*"
-          channels: conda-forge,defaults
-          channel-priority: true
-          activate-environment: focusflow
           environment-file: environment.yml
+          activate-environment: focusflow
 
-    - name: Run Tests
-      shell: bash -el {0}
-      run: |
-        python manage.py migrate
-        pytest
+      - name: Run Django Tests
+        working-directory: backend
+        shell: bash -el {0}
+        run: |
+          python manage.py migrate
+          python manage.py test
 
+      # ---------------------------
+      # Setup Frontend
+      # ---------------------------
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Start frontend app (in background)
+        working-directory: frontend
+        run: |
+          nohup npm run dev &
+
+      - name: Wait for frontend to boot
+        run: sleep 10
+
+      # ---------------------------
+      # Run Cypress Tests
+      # ---------------------------
+      - name: Run Cypress E2E tests
+        working-directory: frontend
+        run: npx cypress run
