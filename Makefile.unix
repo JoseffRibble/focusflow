@@ -1,43 +1,68 @@
-.PHONY: setup format lint check pre-commit clean clean-cache clean-env
+.PHONY: setup setup-backend setup-frontend format lint check pre-commit clean clean-backend clean-frontend clean-cache clean-env
 
-# Create conda environment and install pre-commit hooks
-setup:
-	conda env create -f environment.yml
-	. $$(conda info --base)/etc/profile.d/conda.sh 
-	conda init
-	conda activate focusflow
-	pre-commit install
+# ---------------------------
+# Setup full environment (backend + frontend)
+# ---------------------------
+setup: setup-backend setup-frontend
 
-# Format code using Black and Ruff (includes import sorting)
+# Setup backend: create Conda env and install pre-commit hooks
+setup-backend:
+	conda env create -f environment.yml || echo "Environment may already exist"
+	conda run -n focusflow pre-commit install
+
+# Setup frontend: install Node packages
+setup-frontend:
+	cd frontend && npm install
+
+# ---------------------------
+# Code formatting
+# ---------------------------
 format:
-	black backend
-	-ruff check backend --fix || echo "[INFO] Ruff finished with issues. Please fix manually."
+	conda run -n focusflow black backend
+	conda run -n focusflow ruff check backend --fix || echo "[INFO] Ruff finished with issues. Please fix manually."
 
-# Lint using Ruff and Mypy (no auto-fixes)
+# ---------------------------
+# Linting
+# ---------------------------
 lint:
-	ruff check backend
-	mypy backend
+	conda run -n focusflow ruff check backend
+	conda run -n focusflow mypy backend
 
-# Strict check: fail on any issue (for CI or pre-push)
+# ---------------------------
+# Full check: format + lint
+# ---------------------------
 check:
-	ruff check backend
-	black --check backend
-	mypy backend
+	conda run -n focusflow ruff check backend
+	conda run -n focusflow black --check backend
+	conda run -n focusflow mypy backend
 
-# Run pre-commit hooks on all files
+# ---------------------------
+# Run all pre-commit hooks
+# ---------------------------
 pre-commit:
-	pre-commit run --all-files
+	conda run -n focusflow pre-commit run --all-files
 
-# Combined cleanup
-clean: clean-cache clean-env
+# ---------------------------
+# Clean all temporary files (no environment deletion)
+# ---------------------------
+clean: clean-backend clean-frontend
 
-# Remove Python cache files
-clean-cache:
+# Clean backend Python cache files
+clean-backend:
 	find . -type d -name "__pycache__" -exec rm -r {} +
 	find . -type f -name "*.pyc" -delete
 	rm -rf .pytest_cache
 
-# Remove conda environment completely
-clean-env:
-	-@conda deactivate || echo "Skip deactivate"
-	conda activate base && conda remove --name focusflow --all -y
+# Clean frontend build and node_modules
+clean-frontend:
+	rm -rf frontend/node_modules
+	rm -rf frontend/.next
+	rm -rf frontend/dist
+	rm -rf frontend/build
+	rm -f frontend/package-lock.json
+
+# ---------------------------
+# Remove entire dev environment (backend + frontend)
+# ---------------------------
+clean-env: clean-backend clean-frontend
+	conda remove --name focusflow --all -y || echo "Environment not found"
