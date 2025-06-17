@@ -22,3 +22,4 @@ dependencies:
       - markdown
       - django-filter
       - locust
+      - djangorestframework-simplejwt
