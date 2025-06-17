@@ -49,3 +49,20 @@ Tests were executed in both:
 #### What was difficult
 - Ensuring the UI had fully re-rendered before assertions was challenging at first.
 - Debugging failed tests due to shared task titles led to several false negatives before resolved.
+
+## 10.4 - Integrate Tests into CI Pipeline
+
+- Working Pipeline File: [ci.yml](/.github/workflows/ci.yml)
+
+### Explaination
+We use GitHub Actions to run a full CI pipeline that tests both the backend (Django) and frontend (Cypress E2E).
+- Backend: The workflow sets up a Conda environment using environment.yml, runs Django migrations, and executes unit tests.
+- Frontend
+    - It installs Node.js and frontend dependencies via npm install, then runs the app in the background.
+    - Cypress is used to perform end-to-end UI tests in headless mode, verifying that key user interactions work as expected.
+
+This setup ensures the backend and frontend are tested automatically on every push or pull request.
+
+### Result
+![10_CI_GH_Action-1](/docs/images/test_result/10_CI_GH_Action-1.png)
+![10_CI_GH_Action-2](/docs/images/test_result/10_CI_GH_Action-2.png)
