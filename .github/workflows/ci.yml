@@ -29,6 +29,15 @@ jobs:
           python manage.py migrate
           python manage.py test
 
+      - name: Start Django server (background)
+        working-directory: backend
+        shell: bash -el {0}
+        run: |
+          nohup python manage.py runserver 0.0.0.0:8000 &
+
+      - name: Wait for Django to boot
+        run: sleep 10
+
       # ---------------------------
       # Setup Frontend
       # ---------------------------

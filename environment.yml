@@ -17,7 +17,9 @@ dependencies:
       - ruff
       - behave
       - pre-commit
+      - django-cors-headers
       - djangorestframework
       - markdown
       - django-filter
       - locust
+      - djangorestframework-simplejwt
