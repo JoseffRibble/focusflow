@@ -10,19 +10,19 @@ setup:
 
 # Format code using Black and Ruff (includes import sorting)
 format:
-	black core
-	-ruff check core --fix || echo "[INFO] Ruff finished with issues. Please fix manually."
+	black backend
+	-ruff check backend --fix || echo "[INFO] Ruff finished with issues. Please fix manually."
 
 # Lint using Ruff and Mypy (no auto-fixes)
 lint:
-	ruff check core
-	mypy core
+	ruff check backend
+	mypy backend
 
 # Strict check: fail on any issue (for CI or pre-push)
 check:
-	ruff check core
-	black --check core
-	mypy core
+	ruff check backend
+	black --check backend
+	mypy backend
 
 # Run pre-commit hooks on all files
 pre-commit:
